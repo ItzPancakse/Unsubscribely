@@ -74,15 +74,7 @@
             <p>&copy; <span id="copyright-year"></span> <a href="https://pancakse.dev" target="_blank" rel="noopener noreferrer">Pancakse</a>. All rights reserved.</p>
         </footer>
 
-        <script>
-            const startYear = 2026;
-            const currentYear = new Date().getFullYear();
-
-            document.getElementById("copyright-year").textContent =
-                currentYear > startYear
-                    ? `${startYear}–${currentYear}`
-                    : startYear;
-        </script>
+        <script src="src/main.js"></script>
     </div>
 </body>
 </html>
