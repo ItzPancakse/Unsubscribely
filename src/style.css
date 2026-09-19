@@ -44,6 +44,15 @@ nav {
 .logo {
     font-weight: 700;
     font-size: 1.2rem;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.logo:visited,
+.logo:hover,
+.logo:active {
+    color: var(--text);
+    text-decoration: none;
 }
 
 .badge {
