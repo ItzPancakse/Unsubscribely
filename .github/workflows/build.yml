@@ -1,0 +1,106 @@
+name: Build and Release Unsubscribely
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            platform: linux/amd64
+            build-tags: webkit2_41
+            artifact-name: unsubscribely-linux
+            binary-path: build/bin/Unsubscribely
+          - os: windows-latest
+            platform: windows/amd64
+            build-tags: ""
+            artifact-name: unsubscribely-windows
+            binary-path: build/bin/Unsubscribely.exe
+          - os: macos-latest
+            platform: darwin/universal
+            build-tags: ""
+            artifact-name: unsubscribely-macos
+            binary-path: build/bin/Unsubscribely.app
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev build-essential pkg-config
+
+      - name: Install Wails CLI
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Build (Linux)
+        if: runner.os == 'Linux'
+        run: wails build -platform ${{ matrix.platform }} -tags ${{ matrix.build-tags }}
+
+      - name: Build (Windows/macOS)
+        if: runner.os != 'Linux'
+        run: wails build -platform ${{ matrix.platform }}
+
+      # Zip macOS .app bundle so it survives upload as a single file
+      - name: Zip macOS app
+        if: runner.os == 'macOS'
+        run: cd build/bin && zip -r Unsubscribely-macos.zip Unsubscribely.app
+
+      - name: Upload artifact (Linux/Windows)
+        if: runner.os != 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: ${{ matrix.binary-path }}
+
+      - name: Upload artifact (macOS)
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: build/bin/Unsubscribely-macos.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Read version
+        id: version
+        run: echo "version=$(cat version.txt | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          files: artifacts/**/*
