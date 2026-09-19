@@ -1,0 +1,25 @@
+{
+  "name": "unsubscribely",
+  "version": "1.0.0",
+  "description": "My emails are too cluttered bro.",
+  "homepage": "https://github.com/ItzPancakse/Unsubscribely#readme",
+  "bugs": {
+    "url": "https://github.com/ItzPancakse/Unsubscribely/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ItzPancakse/Unsubscribely.git"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.3.0"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.1"
+  }
+}

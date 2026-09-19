@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unsubscribely</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <div id="app">
+
+        <nav>
+            <div class="logo">Unsubscribely</div>
+            <span class="badge">Beta</span>
+        </nav>
+
+        <header class="hero">
+            <h1>Clean up your messy inbox.</h1>
+            <p>
+                What makes unsubscribely different?
+                Unsubscribely is a free and open-source tool that helps you unsubscribe from unwanted emails and newsletters. It is designed to be simple, fast, and privacy-focused. Unlike other services, unsubscribely does not require you to sign up or provide any personal information. You can simply enter your email address and start cleaning up your inbox right away.
+            </p>
+            <a href="get-started.html" class="cta">Get Started</a>
+        </header>
+
+        <section class="problem">
+            <h2>Da problem.</h2>
+            <p>Most inboxes are buried in newsletters, promos, or notifications nobody asked for. Unsubscribe links are hidden, sketchy or entirely missing and the free browser extensions that claim to unsubscribe you usually just hide the mess instead of actually removing you from that list!</p>
+        </section>
+
+        <section class="features">
+            <h2>What Unsubscribely does.</h2>
+            <div class="feature-card">
+                <span class="feature-card">1</span>
+                <h3>See who's spamming your emails</h3>
+                <p>Unsubscribely helps you identify which senders are flooding your inbox with unwanted messages.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-card">2</span>
+                <h3>Read one-click unsubscribe</h3>
+                <p>Fires the actual <code>List-Unsubscribe</code> request not just filtering your emails actaully unsubscribing you from those lists.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-card">3</span>
+                <h3>Auto-archive fallack</h3>
+                <p>No unsubscribe option? Future emails from that sender get filed away automatically instead.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-card">4</span>
+                <h3>Privacy-focused</h3>
+                <p>Unsubscribely does not collect or store any personal information. Your data remains private and secure.</p>
+            </div>
+        </section>
+
+        <section class="providers">
+            <h2>Works well with...</h2>
+            <ul>
+                <li>Gmail</li>
+                <li>Outlook</li>
+                <li>iCloud Mail</li>
+                <li>Yahoo Mail</li>
+                <li>And possibly more coming soon!</li>
+            </ul>
+        </section>
+
+        <section class="oss">
+            <h2>Free. Open Source. No account needed.</h2>
+            <p>Unsubscribely doesn't run on a server that sees your email. Gmail and Outlook connect through their own official sign-in. Your password never touches this app. The full source code is available on GitHub!</p>
+            <a href="https://github.com/ItzPancakse/Unsubscribely" target="_blank" rel="noopener noreferrer" class="cta">View the source code on GitHub!</a>
+        </section>
+
+
+        <footer>
+            <p>&copy; <span id="copyright-year"></span> <a href="https://pancakse.dev" target="_blank" rel="noopener noreferrer">Pancakse</a>. All rights reserved.</p>
+        </footer>
+
+        <script>
+            const startYear = 2026;
+            const currentYear = new Date().getFullYear();
+
+            document.getElementById("copyright-year").textContent =
+                currentYear > startYear
+                    ? `${startYear}–${currentYear}`
+                    : startYear;
+        </script>
+    </div>
+</body>
+</html>
