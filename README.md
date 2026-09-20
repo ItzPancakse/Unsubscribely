@@ -86,5 +86,11 @@ For iCloud or Yahoo no setup is needed just follow the guide in the getting star
 - IMAP scans are capped at the ~150-200 most recent emails to keep the scan time reasonable. This means that if you have a lot of emails, some older emails may not be scanned for subscriptions.
 - The app is currently in beta and may have bugs or issues. Please report any issues on the GitHub repository.
 
+## Deployment notes
+
+This app is a **persistent Express server**, not a serverless app. It need to be run on a server that can handle long-running processes. E.g Linode, DigitalOcean or pretty much any VPS provider. It can also be run on a local machine for personal use.
+**Do not deploy this to Netlify or Vercel as-is!** Both platforms run code as short-lived serverless functions, which will not work for this app. If you want to deploy to Vercel or Netlify, you will need to modify the code to work with their serverless architecture.
+
+
 ## License
 This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details.
