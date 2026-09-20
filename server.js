@@ -4,6 +4,9 @@ import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
 import { google } from 'googleapis';
+import { ImapFlow } from 'imapflow';
+
+// Gmail API setup
 
 const app = express();
 app.use(express.json());
@@ -36,9 +39,18 @@ app.get('/api/gmail/connect', (req, res) => {
 app.get('/api/gmail/callback', async (req, res) => {
     const oAuth2Client = getOAuthClient();
     try {
+        if (!req.query.code) {
+            return res.status(400).send('Missing Gmail authorization code');
+        }
         const { tokens } = await oAuth2Client.getToken(req.query.code);
         req.session.gmailTokens = tokens;
-        res.redirect('/dashboard.html');
+        req.session.save((err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Could not save Gmail session');
+            }
+            res.redirect('/dashboard.html');
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Error during Gmail OAuth callback');
@@ -107,6 +119,68 @@ app.post('/api/unsubscribe', async (req, res) => {
         return res.json({ success: true, note: 'mailto', mailto });;
     }
     res.json({ success: false });
+});
+
+// Yahoo/Icloud/Any generic IMAP email provider setup
+
+app.post('/api/imap/scan', async (req, res) => {
+    const { host, user, pass } = req.body;
+    if (!host || !user || !pass) {
+        return res.status(400).json({ error: 'Host, email, and password are required' });
+    }
+
+    const client = new ImapFlow({
+        host,
+        port: 993,
+        secure: true,
+        auth: { user, pass },
+        logger: false,
+    });
+    const senderMap = {};
+
+    try {
+        await client.connect();
+        const lock = await client.getMailboxLock('INBOX');
+
+        try {
+            const mailbox = client.mailbox;
+            const total = mailbox.exists;
+            const start = total > 150 ? total - 150 : 1;
+
+            for await (const msg of client.fetch(`${start}:${total}`, {
+                envelope: true,
+                headers: ['list-unsubscribe'],
+            })) {
+                const addr = msg.envelope.from?.[0];
+                if (!addr) continue;
+                const from = `${addr.name || ''} <${addr.address}>`.trim();
+
+                const rawHeader = msg.headers?.toString() || '';
+                const match = rawHeader.match(/List-Unsubscribe:\s*(.*)/i);
+                const headerValue = match ? match[1] : '';
+                const urlMatch = headerValue.match(/<(https?:[^>]+)>/i);
+                const mailtoMatch = headerValue.match(/<(mailto:[^>]+)>/i);
+
+                if (!senderMap[from]) {
+                    senderMap[from] = {
+                        sender: from,
+                        count: 0,
+                        unsubscribeUrl: urlMatch ? urlMatch[1] : null,
+                        unsubscribeMailto: mailtoMatch ? mailtoMatch[1] : null,
+                    };
+                }
+                senderMap[from].count++;
+            }
+        } finally {
+                lock.release();
+            }
+
+            await client.logout();
+            res.json(Object.values(senderMap).sort((a, b) => b.count - a.count));
+    } catch (err) {
+        console.error(err);
+        res.status(401).send('Could not connect. Check your credentials and IMAP settings.');
+    }
 });
 
 app.use(express.static('.'));

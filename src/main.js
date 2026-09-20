@@ -1,7 +1,10 @@
 const startYear = 2026;
 const currentYear = new Date().getFullYear();
 
-document.getElementById("copyright-year").textContent =
-    currentYear > startYear
-        ? `${startYear}–${currentYear}`
-        : startYear;
+const copyrightYear = document.getElementById("copyright-year");
+if (copyrightYear) {
+    copyrightYear.textContent =
+        currentYear > startYear
+            ? `${startYear}–${currentYear}`
+            : startYear;
+}

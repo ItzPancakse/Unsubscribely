@@ -3,14 +3,29 @@
 let allSenders = []
 
 async function loadSenders() {
-    const res = await fetch('/api/gmail/scan');
+    const params = new URLSearchParams(window.location.search);
     const body = document.getElementById('results-body');
 
-    if (!res.ok) {
-        body.innerHTML = '<tr><td colspan="4">Failed to load senders</td></tr>';
+    if (params.get('source') === 'imap') {
+        const stored = sessionStorage.getItem('imapSenders');
+        if (!stored) {
+            body.innerHTML = '<tr><td colspan="4">No data found — go back and scan again.</td></tr>';
+            return;
+        }
+        allSenders = JSON.parse(stored);
+        updateStats(allSenders);
+        renderRows(allSenders);
         return;
     }
 
+    const res = await fetch('/api/gmail/scan');
+    if (!res.ok) {
+        const message = res.status === 401
+            ? 'Gmail is not connected. Return to Get Started and connect Gmail first.'
+            : 'Failed to load senders.';
+        body.innerHTML = `<tr><td colspan="4">${message}</td></tr>`;
+        return;
+    }
     allSenders = await res.json();
     updateStats(allSenders);
     renderRows(allSenders);
@@ -18,7 +33,7 @@ async function loadSenders() {
 
 function updateStats(senders) {
     const totalEmails = senders.reduce((sum, s) => sum + s.count, 0);
-    const unsubscribable = senders.filter((s) => s.unsubscribeUrl || s.unsubscribableMailto).length;
+    const unsubscribable = senders.filter((s) => s.unsubscribeUrl || s.unsubscribeMailto).length;
 
     document.getElementById('stat-senders').textContent = senders.length;
     document.getElementById('stat-emails').textContent = totalEmails;
@@ -36,7 +51,7 @@ function renderRows(senders) {
 
     senders.forEach((s) => {
         const row = document.createElement('tr');
-        const canUnsub = s.unsubscribeUrl || s.unsubscribableMailto;
+        const canUnsub = s.unsubscribeUrl || s.unsubscribeMailto;
 
         row.innerHTML = `
         <td>${s.sender}</td>
@@ -52,7 +67,7 @@ function renderRows(senders) {
                 const res = await fetch('/api/unsubscribe', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: s.unsubscribeUrl, mailto: s.unsubscribableMailto }),
+                    body: JSON.stringify({ url: s.unsubscribeUrl, mailto: s.unsubscribeMailto }),
                 });
                 const result = await res.json();
                 e.target.textContent = result.success ? 'Done' : 'Failed';
