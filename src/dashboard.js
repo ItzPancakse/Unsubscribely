@@ -5,28 +5,25 @@ let allSenders = []
 async function loadSenders() {
     const params = new URLSearchParams(window.location.search);
     const body = document.getElementById('results-body');
+    const source = params.get('source');
 
-    if (params.get('source') === 'imap') {
+    if (source === 'imap') {
         const stored = sessionStorage.getItem('imapSenders');
         if (!stored) {
             body.innerHTML = '<tr><td colspan="4">No data found — go back and scan again.</td></tr>';
             return;
         }
         allSenders = JSON.parse(stored);
-        updateStats(allSenders);
-        renderRows(allSenders);
-        return;
+    } else {
+        const endpoint = source === 'outlook' ? '/api/outlook/scan' : '/api/gmail/scan';
+        const res = await fetch(endpoint);
+        if (!res.ok) {
+            body.innerHTML = '<tr><td colspan="4">Not connected — go back and connect an account.</td></tr>';
+            return;
+        }
+        allSenders = await res.json();
     }
 
-    const res = await fetch('/api/gmail/scan');
-    if (!res.ok) {
-        const message = res.status === 401
-            ? 'Gmail is not connected. Return to Get Started and connect Gmail first.'
-            : 'Failed to load senders.';
-        body.innerHTML = `<tr><td colspan="4">${message}</td></tr>`;
-        return;
-    }
-    allSenders = await res.json();
     updateStats(allSenders);
     renderRows(allSenders);
 }

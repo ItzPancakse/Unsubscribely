@@ -2,6 +2,10 @@ document.getElementById('connect-gmail').addEventListener('click', () => {
     window.location.href = '/api/gmail/connect';
 });
 
+document.getElementById('connect-outlook').addEventListener('click', () => {
+    window.location.href = '/api/outlook/connect';
+});
+
 const imapForm = document.getElementById('imap-form');
 const imapFormEl = document.getElementById('imap-credentials-form');
 let selectedHost = null;

@@ -5,6 +5,7 @@ import express from 'express';
 import session from 'express-session';
 import { google } from 'googleapis';
 import { ImapFlow } from 'imapflow';
+import {ConfidentialClientApplication} from "@azure/msal-node";
 
 // Gmail API setup
 
@@ -119,6 +120,77 @@ app.post('/api/unsubscribe', async (req, res) => {
         return res.json({ success: true, note: 'mailto', mailto });;
     }
     res.json({ success: false });
+});
+
+// Outlook shit
+
+const msalClient = new ConfidentialClientApplication({
+    auth: {
+        clientId: process.env.AZURE_CLIENT_ID,
+        clientSecret: process.env.AZURE_CLIENT_SECRET,
+        authority: 'https://login.microsoftonline.com/common',
+    },
+});
+
+app.get('/api/outlook/connect', async (req, res) => {
+    const authUrl = await msalClient.getAuthCodeUrl({
+        scopes: ['Mail.Read'],
+        redirectUri: process.env.AZURE_REDIRECT_URI,
+    });
+    res.redirect(authUrl);
+});
+
+app.get('/api/outlook/callback', async (req, res) => {
+    try {
+        const tokenResponse = await msalClient.acquireTokenByCode({
+            code: req.query.code,
+            scopes: ['Mail.Read'],
+            redirectUri: process.env.AZURE_REDIRECT_URI,
+        });
+        req.session.outlookToken = tokenResponse.accessToken;
+        res.redirect('/dashboard.html?source=outlook');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error during Outlook OAuth callback');
+    }
+});
+
+app.get('/api/outlook/scan', async (req, res) => {
+    if (!req.session.outlookToken) {
+        return res.status(401).send('Not authenticated with Outlook');
+    }
+
+    try {
+        const response = await fetch (
+            'https://graph.microsoft.com/v1.0/me/messages?$top=100&$select=from,internetMessageHeaders',
+            { headers: { Authorization: `Bearer ${req.session.outlookToken}` } }
+        );
+        const data = await response.json();
+        const senderMap = {};
+
+        for (const msg of data.value || []) {
+            const from = msg.from?.emailAddress?.address || 'unknown';
+            const headers = msg.internetMessageHeaders || [];
+            const listUnsub = headers.find((h) => h.name === 'list-unsubscribe')?.value || '';
+
+            const urlMatch = listUnsub.match(/<((?:https?):[^>]+)>/i);
+            const mailtoMatch = listUnsub.match(/<(mailto:[^>]+)>/i);
+
+            if (!senderMap[from]) {
+                senderMap[from]  = {
+                    sender: from,
+                    count: 0,
+                    unsubscribeUrl: urlMatch ? urlMatch[1] : null,
+                    unsubscribeMailto: mailtoMatch ? mailtoMatch[1] : null,
+                };
+            }
+            senderMap[from].count++;
+        }
+        res.json(Object.values(senderMap).sort((a, b) => b.count - a.count));
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to scan Outlook inbox.' });
+    }
 });
 
 // Yahoo/Icloud/Any generic IMAP email provider setup
