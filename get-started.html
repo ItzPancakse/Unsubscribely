@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Unsubscribely | Get Started</title>
     <link rel="stylesheet" href="src/style.css">
 </head>
@@ -13,11 +14,85 @@
             <span class="badge">Beta</span>
         </nav>
 
+        <header class="hero small">
+            <h1>Connect your inbox.</h1>
+            <p>Pick your email provider below. Nothing happens when you finish the setup, no data is scanned yet.</p>
+        </header>
+
+        <section class="provider-list">
+
+            <div class="provider-card">
+                <div class="provider-info">
+                    <h3>Gmail</h3>
+                    <p>Connect your Gmail account to start unsubscribing from unwanted emails.</p>
+                    <p>GMAIL WORKS BUT YOU CANT USE IT BECAUSE I CANT DO APP VERIFICATION!</p>
+                </div>
+                <button class="connect-button secondary" id="connect-gmail">Connect</button>
+            </div>
+
+            <div class="provider-card disabled">
+                <div class="provider-info">
+                    <h3>Outlook</h3>
+                    <p>Connect your Outlook account to start unsubscribing from unwanted emails.</p>
+                </div>
+                <button class="connect-button secondary" id="connect-outlook" disabled>Coming Soon</button>
+            </div>
+
+            <div class="provider-card">
+                <div class="provider-info">
+                    <h3>iCloud Mail</h3>
+                    <p>Apple doesn't offer sign-in for third-party mail apps, so you'll need an <strong>app-specific password</strong> — a limited password just for this app, separate from your real Apple ID password.</p>
+                    <details>
+                        <summary>How to get an app-specific password</summary>
+                        <ol>
+                            <li>Go to <code>appleid.apple.com</code> and sign in</li>
+                            <li>Go to <strong>Sign-In and Security</strong></li>
+                            <li>Select <strong>App-Specific Passwords</strong> → Generate</li>
+                            <li>Copy the password it gives you — you'll paste it below, not your real password</li>
+                        </ol>
+                    </details>
+                </div>
+                <button class="connect-button secondary" id="connect-icloud">Connect iCloud</button>
+            </div>
+
+            <div class="provider-card">
+                <div class="provider-info">
+                    <h3>Yahoo Mail</h3>
+                    <p>Same idea as iCloud — Yahoo also requires an app-specific password rather than your normal login.</p>
+                    <details>
+                        <summary>How to get an app-specific password</summary>
+                        <ol>
+                            <li>Go to your Yahoo Account Security settings</li>
+                            <li>Find <strong>Generate app password</strong></li>
+                            <li>Name it "Unsubscribely" and generate</li>
+                            <li>Copy the password it gives you — you'll paste it below, not your real password</li>
+                        </ol>
+                    </details>
+                </div>
+                <button class="connect-button secondary" id="connect-yahoo">Connect Yahoo</button>
+            </div>
+
+        </section>
+
+        <section class="imap-form-section" id="imap-form" hidden>
+            <h2>Enter your details</h2>
+            <form id="imap-credentials-form">
+                <label for="imap-email">Email address</label>
+                <input type="email" id="imap-email" required />
+
+                <label for="imap-password">App-specific password</label>
+                <input type="password" id="imap-password" required />
+
+                <button type="submit" class="cta">Scan my inbox</button>
+            </form>
+        </section>
+
         <footer>
             <p>&copy; <span id="copyright-year"></span> <a href="https://pancakse.dev" target="_blank" rel="noopener noreferrer">Pancakse</a>. All rights reserved.</p>
         </footer>
 
         <script src="src/main.js"></script>
+        <script src="/src/getting-started.js"></script>
     </div>
 </body>
 </html>

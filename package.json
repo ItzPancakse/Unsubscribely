@@ -14,12 +14,18 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node server.js",
+    "prod": "concurrently \"npm run server\" \"npm run dev\""
   },
   "devDependencies": {
+    "concurrently": "^10.0.5",
     "vite": "^8.3.0"
   },
   "dependencies": {
-    "dotenv": "^18.0.1"
+    "dotenv": "^18.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "googleapis": "^181.0.0"
   }
 }

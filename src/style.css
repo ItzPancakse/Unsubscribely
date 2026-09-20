@@ -80,6 +80,21 @@ nav {
     color: var(--muted);
 }
 
+.hero.small {
+    margin: 2rem auto 1.5rem;
+    padding: 0 1rem;
+}
+
+.hero.small h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero.small p {
+    font-size: 0.95rem;
+    margin: 0;
+}
+
 .cta {
     display: inline-block;
     background: var(--accent);
@@ -166,6 +181,113 @@ section h2 {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
     background: var(--surface);
+}
+
+.provider-list {
+    width: calc(100% - 2rem);
+    max-width: 500px;
+    margin-bottom: 3rem;
+    padding: 0;
+}
+
+.provider-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.provider-info h3 {
+    margin: 0 0 0.35rem;
+}
+
+.provider-info p {
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+.provider-info details {
+    margin-top: 0.75rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+}
+
+.provider-info summary {
+    cursor: pointer;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.provider-info ol {
+    margin: 0.5rem 0 0;
+    padding-left: 1.2rem;
+}
+
+.connect-button {
+    align-self: flex-start;
+    background: var(--accent);
+    color: var(--accent-text);
+    border: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.connect-button.secondary {
+    background: var(--accent);
+    color: var(--accent-text);
+    border: none;
+    width: 100%;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.imap-form-section {
+    max-width: 400px;
+}
+
+.imap-form-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+.imap-form-section label {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+}
+
+.imap-form-section input {
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.imap-form-section button {
+    margin-top: 1rem;
+}
+
+.provider-card.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.connect-button:disabled {
+    cursor: not-allowed;
 }
 
 code {
