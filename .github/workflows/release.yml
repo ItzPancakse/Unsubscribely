@@ -74,7 +74,15 @@ jobs:
 
       - name: Archive macOS app
         if: runner.os == 'macOS'
-        run: ditto -c -k --sequesterRsrc --keepParent dist/mac "Unsubscribely-${{ github.ref_name }}-macos.zip"
+        run: |
+          MAC_DIR="$(find dist -maxdepth 1 -type d -name 'mac*' -print -quit)"
+          if [ -z "$MAC_DIR" ]; then
+            echo "No macOS unpacked build directory found"
+            find dist -maxdepth 2 -print
+            exit 1
+          fi
+          ditto -c -k --sequesterRsrc --keepParent "$MAC_DIR" \
+            "Unsubscribely-${{ github.ref_name }}-macos.zip"
 
       - name: Upload release archive
         uses: actions/upload-artifact@v4
