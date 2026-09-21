@@ -1,0 +1,46 @@
+.demo-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: calc(100% - 3rem);
+    max-width: calc(780px - 3rem);
+    margin: 1.5rem auto 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.demo-banner p {
+    margin: 0;
+}
+
+.demo-banner strong,
+.demo-banner a {
+    color: var(--text);
+}
+
+.demo-reset {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.demo-reset:hover {
+    border-color: var(--text);
+}
+
+.demo-banner a:focus-visible,
+.demo-banner:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+    border-radius: 2px;
+}

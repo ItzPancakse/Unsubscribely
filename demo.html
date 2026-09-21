@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unsubscribely | Demo</title>
+    <link rel="stylesheet" href="src/style.css">
+    <link rel="stylesheet" href="src/dashboard.css">
+    <link rel="stylesheet" href="src/demo.css">
+</head>
+<body>
+    <div id="app">
+
+        <nav>
+            <a href="index.html" class="logo">Unsubscribely</a>
+            <span class="badge">Beta</span>
+        </nav>
+
+        <div class="demo-banner" role="note">
+            <p>
+                <strong>Demo mode.</strong>
+                This is sample data.
+                <a href="get-started.html">Connect your own inbox.</a>
+            </p>
+            <button type="button" id="reset-demo" class="demo-reset">Reset demo.</button>
+        </div>
+
+        <section class="dashboard-content">
+            <div class="stat-card">
+                <span class="stat-number" id="stat-senders">-</span>
+                <span class="stat-label">Senders found</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="stat-emails">-</span>
+                <span class="stat-label">Total emails scanned</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="stat-unsubscribable">-</span>
+                <span class="stat-label">Can be unsubscribed</span>
+            </div>
+        </section>
+
+        <section class="dashboard-table">
+            <div class="table-header">
+                <h2>Your senders</h2>
+                <input type="text" id="filter-input" placeholder="Filter by sender..." aria-label="Filter senders" />
+            </div>
+            <table id="results-table">
+                <thead>
+                    <tr>
+                        <th>Sender</th>
+                        <th>Email Count</th>
+                        <th>Unsubscribable</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body">
+                    <tr><td colspan="4">Loading...</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer>
+            <p>&copy; <span id="copyright-year"></span> <a href="https://pancakse.dev" target="_blank" rel="noopener noreferrer">Pancakse</a>. All rights reserved.</p>
+            <p><a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a></p>
+        </footer>
+    </div>
+    <script src="src/main.js"></script>
+    <script src="src/demo.js"></script>
+</body>
+</html>
