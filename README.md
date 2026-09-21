@@ -1,6 +1,8 @@
 # Unsubscribely
 my emails are too cluttered bro.
 
+**Test it [here!](https://unsubscribely.pancakse.dev/)**
+
 ## Da problem.
 
 Most inboxes are cluttered with newsletters, promotional emails, and other unwanted subscriptions. It can be overwhelming to manage and keep track of all these emails, leading to a less productive email experience.
