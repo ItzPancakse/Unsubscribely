@@ -1,0 +1,18 @@
+# Keep secrets and junk out of the build context (and out of the image).
+.env
+.env.*
+!.env.example
+
+node_modules
+.git
+.gitignore
+.github
+
+# Not needed at runtime
+vite.config.js
+dist
+*.md
+!LICENSE
+Dockerfile
+docker-compose.yml
+.dockerignore
