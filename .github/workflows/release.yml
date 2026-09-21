@@ -49,16 +49,27 @@ jobs:
         shell: bash
         env:
           GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
-          GOOGLE_REDIRECT_URI: ${{ vars.GOOGLE_REDIRECT_URI || 'http://localhost:3000/api/gmail/callback' }}
           AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
-          AZURE_REDIRECT_URI: ${{ vars.AZURE_REDIRECT_URI || 'http://localhost:3000/api/outlook/callback' }}
         run: |
+          test -n "$GOOGLE_CLIENT_ID" || {
+            echo "Missing repository variable: GOOGLE_CLIENT_ID"
+            exit 1
+          }
+          test -n "$AZURE_CLIENT_ID" || {
+            echo "Missing repository variable: AZURE_CLIENT_ID"
+            exit 1
+          }
           {
             printf 'GOOGLE_CLIENT_ID=%s\n' "$GOOGLE_CLIENT_ID"
-            printf 'GOOGLE_REDIRECT_URI=%s\n' "$GOOGLE_REDIRECT_URI"
+            printf 'GOOGLE_REDIRECT_URI=http://localhost:3000/api/gmail/callback\n'
             printf 'AZURE_CLIENT_ID=%s\n' "$AZURE_CLIENT_ID"
-            printf 'AZURE_REDIRECT_URI=%s\n' "$AZURE_REDIRECT_URI"
+            printf 'AZURE_REDIRECT_URI=http://localhost:3000/api/outlook/callback\n'
           } > .env
+
+          if grep -qE 'CLIENT_SECRET|SESSION_SECRET|APP_ENCRYPTION_KEY' .env; then
+            echo "Private secrets must not be included in desktop configuration"
+            exit 1
+          fi
 
       - name: Build unpacked Electron app
         run: npx electron-builder --${{ matrix.target }} dir --publish never
