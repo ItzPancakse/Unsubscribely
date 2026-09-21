@@ -14,10 +14,17 @@ import { createHash, randomBytes } from 'node:crypto';
 
 const app = express();
 app.use(express.json());
+app.set('trust proxy', 1);
 app.use(session({
     secret: process.env.SESSION_SECRET || randomBytes(32).toString('hex'),
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000,
+    },
 }));
 
 function createPkcePair() {
@@ -59,6 +66,10 @@ app.get('/api/gmail/callback', async (req, res) => {
         if (!req.query.code) {
             return res.status(400).send('Missing Gmail authorization code');
         }
+        if (!req.session.gmailCodeVerifier) {
+            console.error('Gmail OAuth callback is missing the PKCE session verifier');
+            return res.status(400).send('Gmail authorization expired. Please try again.');
+        }
         const { tokens } = await oAuth2Client.getToken({
             code: req.query.code,
             codeVerifier: req.session.gmailCodeVerifier,
@@ -73,7 +84,7 @@ app.get('/api/gmail/callback', async (req, res) => {
             res.redirect('/dashboard.html');
         });
     } catch (err) {
-        console.error(err);
+        console.error('Gmail OAuth token exchange failed:', err.response?.data || err.message);
         res.status(500).send('Error during Gmail OAuth callback');
     }
 });
