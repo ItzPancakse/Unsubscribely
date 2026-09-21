@@ -5,30 +5,46 @@ import express from 'express';
 import session from 'express-session';
 import { google } from 'googleapis';
 import { ImapFlow } from 'imapflow';
-import {ConfidentialClientApplication} from "@azure/msal-node";
+import { ConfidentialClientApplication, PublicClientApplication } from '@azure/msal-node';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createHash, randomBytes } from 'node:crypto';
 
 // Gmail API setup
 
 const app = express();
 app.use(express.json());
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || randomBytes(32).toString('hex'),
     resave: false,
     saveUninitialized: false
 }));
 
+function createPkcePair() {
+    const verifier = randomBytes(32).toString('base64url');
+    const challenge = createHash('sha256').update(verifier).digest('base64url');
+    return { verifier, challenge };
+}
+
 function getOAuthClient() {
     return new google.auth.OAuth2(
         process.env.GOOGLE_CLIENT_ID,
-        process.env.GOOGLE_CLIENT_SECRET,
-        process.env.GOOGLE_REDIRECT_URI
+        process.env.GOOGLE_CLIENT_SECRET || undefined,
+        process.env.GOOGLE_REDIRECT_URI || 'http://127.0.0.1:3000/api/gmail/callback'
     );
 }
 
 app.get('/api/gmail/connect', (req, res) => {
+    if (!process.env.GOOGLE_CLIENT_ID) {
+        return res.status(503).send('Gmail is not configured in this installation');
+    }
     const oAuth2Client = getOAuthClient();
+    const pkce = createPkcePair();
+    req.session.gmailCodeVerifier = pkce.verifier;
     const authUrl = oAuth2Client.generateAuthUrl({
         access_type: 'offline',
+        code_challenge: pkce.challenge,
+        code_challenge_method: 'S256',
         scope: [
             'https://www.googleapis.com/auth/gmail.readonly',
             'https://www.googleapis.com/auth/gmail.modify'
@@ -43,7 +59,11 @@ app.get('/api/gmail/callback', async (req, res) => {
         if (!req.query.code) {
             return res.status(400).send('Missing Gmail authorization code');
         }
-        const { tokens } = await oAuth2Client.getToken(req.query.code);
+        const { tokens } = await oAuth2Client.getToken({
+            code: req.query.code,
+            codeVerifier: req.session.gmailCodeVerifier,
+        });
+        delete req.session.gmailCodeVerifier;
         req.session.gmailTokens = tokens;
         req.session.save((err) => {
             if (err) {
@@ -124,29 +144,50 @@ app.post('/api/unsubscribe', async (req, res) => {
 
 // Outlook shit
 
-const msalClient = new ConfidentialClientApplication({
-    auth: {
-        clientId: process.env.AZURE_CLIENT_ID,
-        clientSecret: process.env.AZURE_CLIENT_SECRET,
-        authority: 'https://login.microsoftonline.com/common',
-    },
-});
+const msalClient = process.env.AZURE_CLIENT_ID
+    ? (process.env.AZURE_CLIENT_SECRET
+        ? new ConfidentialClientApplication({
+            auth: {
+                clientId: process.env.AZURE_CLIENT_ID,
+                clientSecret: process.env.AZURE_CLIENT_SECRET,
+                authority: 'https://login.microsoftonline.com/common',
+            },
+        })
+        : new PublicClientApplication({
+        auth: {
+            clientId: process.env.AZURE_CLIENT_ID,
+            authority: 'https://login.microsoftonline.com/common',
+        },
+        }))
+    : null;
 
 app.get('/api/outlook/connect', async (req, res) => {
+    if (!msalClient || !process.env.AZURE_REDIRECT_URI) {
+        return res.status(503).send('Outlook is not configured in this installation');
+    }
+    const pkce = createPkcePair();
+    req.session.outlookCodeVerifier = pkce.verifier;
     const authUrl = await msalClient.getAuthCodeUrl({
         scopes: ['Mail.Read'],
         redirectUri: process.env.AZURE_REDIRECT_URI,
+        codeChallenge: pkce.challenge,
+        codeChallengeMethod: 'S256',
     });
     res.redirect(authUrl);
 });
 
 app.get('/api/outlook/callback', async (req, res) => {
+    if (!msalClient || !process.env.AZURE_REDIRECT_URI) {
+        return res.status(503).send('Outlook is not configured in this installation');
+    }
     try {
         const tokenResponse = await msalClient.acquireTokenByCode({
             code: req.query.code,
             scopes: ['Mail.Read'],
             redirectUri: process.env.AZURE_REDIRECT_URI,
+            codeVerifier: req.session.outlookCodeVerifier,
         });
+        delete req.session.outlookCodeVerifier;
         req.session.outlookToken = tokenResponse.accessToken;
         res.redirect('/dashboard.html?source=outlook');
     } catch (err) {
@@ -255,6 +296,7 @@ app.post('/api/imap/scan', async (req, res) => {
     }
 });
 
-app.use(express.static('.'));
+const appRoot = path.dirname(fileURLToPath(import.meta.url));
+app.use(express.static(appRoot));
 
-app.listen(3000, () => console.log('Server is running on http://localhost:3000'));
+app.listen(3000, '127.0.0.1', () => console.log('Server is running on http://127.0.0.1:3000'));

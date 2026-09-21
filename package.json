@@ -11,15 +11,31 @@
     "url": "git+https://github.com/ItzPancakse/Unsubscribely.git"
   },
   "type": "module",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
     "server": "node server.js",
-    "prod": "concurrently \"npm run server\" \"npm run dev\""
+    "electron": "electron electron/main.js",
+    "electron:dev": "npm run electron",
+    "build": "vite build",
+    "dist": "npm run build && electron-builder"
+  },
+  "build": {
+    "appId": "dev.pancakse.unsubscribely",
+    "productName": "Unsubscribely",
+    "files": [
+      "electron/**/*",
+      "server.js",
+      "*.html",
+      "src/**/*",
+      ".env",
+      "package.json"
+    ]
   },
   "devDependencies": {
     "concurrently": "^10.0.5",
+    "electron": "^44.4.3",
+    "electron-builder": "^26.15.3",
     "vite": "^8.3.0"
   },
   "dependencies": {
