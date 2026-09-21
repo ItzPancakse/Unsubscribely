@@ -175,12 +175,19 @@ section h2 {
     flex-wrap: wrap;
 }
 
+.providers .provider-list {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+}
+
 .providers li {
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
     background: var(--surface);
+    text-align: center;
 }
 
 .provider-list {

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unsubscribely | Privacy Policy</title>
+    <link rel="stylesheet" href="src/style.css">
+    <link rel="stylesheet" href="src/privacy-policy.css">
+</head>
+<body>
+
+    <div id="app">
+
+        <nav>
+            <a href="index.html" class="logo">Unsubscribely</a>
+            <span class="badge">Beta</span>
+        </nav>
+
+        <header class="policy-header">
+            <h1>Privacy Policy</h1>
+            <p class="policy-meta">Last updated <time datetime="2026-09-20">September 20, 2026</time></p>
+            <p class="policy-lede">
+                Unsubscribely is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our services. By using Unsubscribely, you agree to the terms outlined in this policy.
+                This page explains what is collected, how it is used, and what you can do to protect your privacy. Unsubscribely is a free and open-source tool that helps you unsubscribe from unwanted emails and newsletters. It is designed to be simple, fast, and privacy-focused. Unlike other services, Unsubscribely does not require you to sign up or provide any personal information. You can simply enter your email address and start cleaning up your inbox right away.
+            </p>
+        </header>
+
+        <div class="policy-layout">
+
+            <nav class="toc" aria-label="Table of Contents">
+                <details open>
+                    <summary>Table of Contents</summary>
+                    <ul>
+                        <li><a href="#short-version">The short version</a></li>
+                        <li><a href="#who">Who runs Unsubscribely</a></li>
+                        <li><a href="#reads">What Unsubscribely reads</a></li>
+                        <li><a href="#does">What it does with that</a></li>
+                        <li><a href="#stored">What is stored</a></li>
+                        <li><a href="#cookies">Cookies and browser storage</a></li>
+                        <li><a href="#others">Who else is involved</a></li>
+                        <li><a href="#google">Google user data</a></li>
+                        <li><a href="#choices">Your choices</a></li>
+                        <li><a href="#security">Security</a></li>
+                        <li><a href="#children">Children</a></li>
+                        <li><a href="#rights">Your rights</a></li>
+                        <li><a href="#changes">Changes to this policy</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </details>
+            </nav>
+
+            <article class="policy-body">
+
+                <section class="policy-section" id="short-version">
+                    <h2>Da shorter version ig.</h2>
+                    <ul class="glance">
+                        <li>
+                            <strong>Only sender details are used.</strong>
+                            Unsubscribely uses the sender and the unsubscribe header of your most recent emails. It doesn't use message bodies or attachments.
+                        </li>
+                        <li>
+                            <strong>Nothing goes into a database.</strong>
+                            Connection details are held temporarily in the server's memory or in your browser tab, and there is no account to create.
+                        </li>
+                        <li>
+                            <strong>No ads, no analytics, no selling.</strong>
+                            Your data isn't sold, used for advertising, or used to train AI models.
+                        </li>
+                        <li>
+                            <strong>Your password stays with you where possible.</strong>
+                            Gmail and Outlook use their own official sign-in, so your password never reaches Unsubscribely. iCloud and Yahoo need an app-specific password, which is used once to connect and not kept.
+                        </li>
+                    </ul>
+                    <p>
+                        Your email data does pass through Unsubscribely's server on its way to your screen. It is processed there and not saved, and the sections below explain how.
+                    </p>
+                </section>
+
+                <section class="policy-section" id="who">
+                    <h2>Who runs Unsubscribely</h2>
+                    <p>
+                        Unsubscribely is a free, open-source project (GPL-3.0) made by <a href="https://pancakse.dev" target="_blank" rel="noopener noreferrer">Pancakse</a>. It is currently in beta.
+                    </p>
+                    <p>
+                        This policy covers the hosted version of Unsubscribely. If you run your own copy from GitHub, whoever runs that copy is responsible for the data it handles, and this policy doesn't apply to them.
+                        The <a href="https://github.com/ItzPancakse/Unsubscribely" target="_blank" rel="noopener noreferrer">source code</a> is public, so you can check anything written here.
+                    </p>
+                </section>
+
+                <section class="policy-section" id="reads">
+                    <h2>What Unsubscribely reads</h2>
+                    <p>
+                        What happens depends on how you connect your inbox. In every case, Unsubscribely only scans a limited number of your most recent emails.
+                    </p>
+
+                    <div class="table-wrap" role="region" aria-label="What is read for each email provider" tabindex="0">
+                        <table class="policy-table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Provider</th>
+                                <th scope="col">How you connect</th>
+                                <th scope="col">What is read</th>
+                                <th scope="col">Scan limit</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">Gmail</th>
+                                <td>Google sign-in (OAuth)</td>
+                                <td>The <code>From</code> and <code>List-Unsubscribe</code> headers of each message</td>
+                                <td>100 most recent emails</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Outlook</th>
+                                <td>Microsoft sign-in (OAuth)</td>
+                                <td>The sender and message headers, of which only the sender and <code>List-Unsubscribe</code> are used</td>
+                                <td>100 most recent emails</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">iCloud Mail, Yahoo Mail</th>
+                                <td>Email address and app-specific password over IMAP</td>
+                                <td>The sender and the <code>List-Unsubscribe</code> header of each message in your inbox</td>
+                                <td>About 150 most recent emails</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        The permissions that Google and Microsoft offer are broader than what Unsubscribely needs. For example, Google's read-only permission technically allows reading whole emails.
+                        Unsubscribely's code asks only for the sender and unsubscribe headers, and you can verify that in the source.
+                    </p>
+                    </section>
+
+                <section class="policy-section" id="does">
+                    <h2>What it does with that</h2>
+                    <ul>
+                        <li>
+                            <strong>Builds your sender list.</strong>
+                            It groups your recent emails by sender, counts them, and checks whether each sender included an unsubscribe link. The result is shown on your dashboard.
+                        </li>
+                        <li>
+                            <strong>Unsubscribes when you click.</strong>
+                            When you press Unsubscribe, Unsubscribely's server sends a one-click unsubscribe request to the web address the sender included in their email.
+                            If a sender only provides an email address for unsubscribing, that address is handed back to your browser. Unsubscribely doesn't send email on your behalf.
+                        </li>
+                        <li>
+                            <strong>Doesn't touch your mailbox.</strong>
+                            It doesn't delete, move, label, or change any of your messages.
+                        </li>
+                    </ul>
+                    <p>
+                        Your data isn't used for profiling, advertising, or training AI models, and it isn't sold.
+                    </p>
+
+                </section>
+
+                <section class="policy-section" id="stored">
+                    <h2>What is stored</h2>
+                    <p>Unsubscribely has no database. Here is everything that is held, and where.</p>
+
+                    <h3>Gmail and Outlook</h3>
+                    <p>
+                        After you sign in, the access details Google or Microsoft give the app are kept in a session on the server. For Gmail these include a refresh token, which lets the app keep access without asking you to sign in again. For Outlook, only a short-lived access token is kept.
+                    </p>
+                    <p>
+                        Sessions are held in the server's memory, not written to disk, and they disappear when the server restarts. Your sender list is built when the dashboard loads, sent to your browser, and not saved on the server.
+                    </p>
+
+                    <h3>iCloud and Yahoo</h3>
+                    <p>
+                        Your email address and app-specific password are sent to the server, used to open a single connection to your mail provider, and then discarded. They aren't saved or logged.
+                        The resulting sender list is kept in your browser's session storage so the dashboard can show it (see below).
+                    </p>
+
+                    <h3>Logs</h3>
+                    <p>
+                        The server writes error messages to its console for debugging. It doesn't log your inbox contents or your password.
+                        The hosting provider that runs the server may keep ordinary request logs, such as IP addresses and timestamps, as part of normal operation. Unsubscribely doesn't control or read those.
+                    </p>
+
+                    <h3>Testing mode</h3>
+                    <p>
+                        Gmail and Outlook access is currently limited to approved testers. If you're a tester, your account's email address is on an allowlist inside the project's Google Cloud or Microsoft Azure console, which only the developer can see.
+                    </p>
+                </section>
+
+                <section class="policy-section" id="cookies">
+                    <h2>Cookies and browser storage</h2>
+                    <ul>
+                        <li>
+                            <strong>Session cookie.</strong>
+                            Connecting Gmail or Outlook sets a cookie that links your browser to its session on the server. It is needed for the app to work and is not used for tracking. It is not set if you only use iCloud or Yahoo.
+                        </li>
+                        <li>
+                            <strong>Session storage.</strong>
+                            For iCloud and Yahoo, your sender list is saved in your browser's <code>sessionStorage</code>. It is cleared when you close the tab.
+                        </li>
+                        <li>
+                            <strong>Nothing else.</strong>
+                            There are no analytics, advertising, or tracking cookies, and no third-party scripts or fonts.
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="policy-section" id="others">
+                    <h2>Who else is involved</h2>
+                    <p>Unsubscribely doesn't share your data for marketing or sell it. These parties do take part in making it work:</p>
+                    <ul>
+                        <li><strong>Google or Microsoft</strong>, when you sign in and when Unsubscribely fetches your sender information. Their own privacy policies apply to that.</li>
+                        <li><strong>Your mail provider</strong> (such as Apple or Yahoo), when you connect over IMAP.</li>
+                        <li>
+                            <strong>The sender you unsubscribe from.</strong>
+                            When you click Unsubscribe, the request goes to the sender's own server. Unsubscribe links often contain a code that identifies your address, so the sender will know that address unsubscribed.
+                            The request comes from Unsubscribely's server, not your device.
+                        </li>
+                        <li><strong>The hosting provider</strong> that runs Unsubscribely's server.</li>
+                    </ul>
+                    <p>
+                        Data may also be disclosed if the law requires it, though the app holds very little beyond a live session.
+                    </p>
+                </section>
+
+                <section class="policy-section" id="google">
+                    <h2>Google user data</h2>
+                    <p>
+                        Unsubscribely's use and transfer to any other app of information received from Google APIs will adhere to the
+                        <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>,
+                        including the Limited Use requirements.
+                    </p>
+                    <p>Specifically, for Gmail data:</p>
+                    <ul>
+                        <li>
+                            <strong>Permissions requested.</strong>
+                            <code>gmail.readonly</code> is used to read sender and unsubscribe headers. <code>gmail.modify</code> is also requested, but Unsubscribely does not currently use it to change, delete, or send anything.
+                        </li>
+                        <li>Google user data is used only to show you your senders and to let you unsubscribe from them.</li>
+                        <li>It isn't sold, and it isn't used or transferred for advertising, including retargeting or interest-based ads.</li>
+                        <li>It isn't used to develop, improve, or train AI or machine-learning models.</li>
+                        <li>Nobody reads your data unless you ask for help with a specific problem, it is needed for security or abuse investigations, or the law requires it.</li>
+                    </ul>
+                </section>
+
+                <section class="policy-section" id="choices">
+                    <h2>Your choices</h2>
+                    <ul>
+                        <li>
+                            <strong>Revoke access at the source.</strong>
+                            Remove Unsubscribely from your
+                            <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer">Google account's third-party access</a>
+                            or your <a href="https://account.live.com/consent/Manage" target="_blank" rel="noopener noreferrer">Microsoft account's app permissions</a>.
+                            This makes any tokens Unsubscribely holds useless straight away.
+                        </li>
+                        <li>
+                            <strong>iCloud and Yahoo.</strong>
+                            Delete the app-specific password in your Apple or Yahoo account settings once you're done. It's a good habit even though Unsubscribely doesn't keep it.
+                        </li>
+                        <li>
+                            <strong>Clear browser data.</strong>
+                            Closing the tab clears session storage. Clearing your cookies removes the link to your server session.
+                        </li>
+                        <li>
+                            <strong>Ask for your session to be cleared.</strong>
+                            There isn't a sign-out button yet. To have a session removed sooner than the next server restart, use the contact details below.
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="policy-section" id="security">
+                    <h2>Security</h2>
+                    <p>
+                        Access tokens and passwords stay on the server and are not sent back to your browser. Unsubscribely connects to Google, Microsoft, and IMAP servers over encrypted connections.
+                    </p>
+                    <p>
+                        This is a beta project run by one developer, and no system is perfectly secure. Use an app-specific password rather than your main password wherever a provider offers one, and revoke access when you're finished.
+                    </p>
+                </section>
+
+                <section class="policy-section" id="children">
+                    <h2>Children</h2>
+                    <p>
+                        Unsubscribely isn't directed at children under 13, and it doesn't knowingly collect information from them.
+                    </p>
+                </section>
+
+                <section class="policy-section" id="rights">
+                    <h2>Your rights</h2>
+                    <p>
+                        Depending on where you live, such as the EU, the UK, or California, you may have the right to access, correct, delete, or restrict the use of your personal data.
+                        Because Unsubscribely keeps almost nothing beyond a live session, using the choices above covers most of this. For anything else, get in touch and the request will be handled.
+                    </p>
+                </section>
+
+                <section class="policy-section" id="changes">
+                    <h2>Changes to this policy</h2>
+                    <p>
+                        If Unsubscribely changes in a way that affects your data, such as adding a new provider or storing something new, this page will be updated first and the date at the top will change.
+                        Past versions are available in the project's <a href="https://github.com/ItzPancakse/Unsubscribely" target="_blank" rel="noopener noreferrer">GitHub history</a>.
+                    </p>
+                </section>
+
+                <section class="policy-section" id="contact">
+                    <h2>Contact</h2>
+                    <p>
+                        Questions, concerns, or requests about your data:
+                        open an issue on <a href="https://github.com/ItzPancakse/Unsubscribely/issues" target="_blank" rel="noopener noreferrer">GitHub</a>,
+                        or reach Pancakse through Discord my username is pancakse.
+                        Please don't post passwords or private email content in a public issue.
+                    </p>
+                </section>
+
+            </article>
+        </div>
+
+        <footer>
+            <p>&copy; <span id="copyright-year"></span> <a href="https://pancakse.dev" target="_blank" rel="noopener noreferrer">Pancakse</a>. All rights reserved.</p>
+            <p><a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a></p>
+        </footer>
+    </div>
+    <script src="/src/main.js"></script>
+    <script src="/src/privacy-policy.js"></script>
+</body>
+</html>

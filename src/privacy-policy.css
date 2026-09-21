@@ -1,0 +1,243 @@
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+}
+
+.policy-header,
+.policy-layout {
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+.policy-header {
+    margin-top: 3rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.policy-header h1 {
+    font-size: 2.25rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.5rem;
+}
+
+.policy-meta {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0 0 1.25rem;
+}
+
+.privacy-lede {
+    font-size: 1.15rem;
+    max-width: 60ch;
+    margin: 0;
+}
+
+.privacy-layout {
+    max-width: 68ch;
+    margin-bottom: 5rem;
+}
+
+.toc {
+    width: min(100%, 360px);
+    margin: 0 auto;
+    text-align: left;
+}
+
+.toc details {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    padding: 0.75rem 1rem;
+}
+
+.toc summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.toc ul {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.1rem;
+}
+
+.toc a {
+    display: block;
+    padding: 0.25rem 0.5rem;
+    border-left: 2px solid transparent;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    text-decoration: none;
+}
+
+.toc a:hover {
+    color: var(--text);
+}
+
+.toc a[aria-current="true"] {
+    color: var(--text);
+    border-left-color: var(--text);
+    font-weight: 600;
+}
+
+.policy-body {
+    width: 100%;
+    max-width: 68ch;
+    margin-inline: auto;
+}
+
+.policy-section {
+    max-width: none;
+    margin: 0 0 3rem;
+    padding: 0;
+    text-align: left;
+    scroll-margin-top: 1.5rem;
+}
+
+.policy-section h2 {
+    font-size: 1.4rem;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+}
+
+.policy-section h3 {
+    font-size: 1.1rem;
+    line-height: 1.25;
+    margin: 1.5rem 0 0.5rem;
+}
+
+.policy-section p {
+    margin: 0 0 1rem;
+}
+
+.policy-section ul {
+    margin: 0 0 1rem;
+    padding-left: 1.25rem;
+}
+
+.policy-section li {
+    margin-bottom: 0.5rem;
+}
+
+.policy-section li:last-child {
+    margin-bottom: 0;
+}
+
+.policy-header a,
+.policy-body a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+}
+
+.policy-header a:hover,
+.policy-body a:hover {
+    text-decoration-thickness: 2px;
+}
+
+.policy-section .glance {
+    list-style: none;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+}
+
+.policy-section .glance li {
+    margin: 0;
+    padding: 0.9rem 1.1rem;
+    border-top: 1px solid var(--border);
+}
+
+.policy-section .glance li:first-child {
+    border-top: 0;
+}
+
+.glance strong {
+    display: block;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin: 0 0 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+}
+
+.policy-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.policy-table th,
+.policy-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.policy-table thead th {
+    border-top: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.policy-table tbody th {
+    font-weight: 600;
+}
+
+.policy-header a:focus-visible,
+.policy-body a:focus-visible,
+.toc a:focus-visible,
+.toc summary:focus-visible,
+.table-wrap:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+@media (max-width: 600px) {
+    .policy-header {
+        margin-top: 2rem;
+    }
+
+    .policy-header h1 {
+        font-size: 1.85rem;
+    }
+
+    .policy-lede {
+        font-size: 1rem;
+    }
+}
+
+@media print {
+    nav,
+    .toc {
+        display: none;
+    }
+
+    .policy-layout {
+        display: block;
+    }
+
+    .policy-body {
+        max-width: none;
+    }
+
+    .policy-section {
+        break-inside: avoid-page;
+    }
+}
