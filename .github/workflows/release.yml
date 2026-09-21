@@ -49,9 +49,9 @@ jobs:
         shell: bash
         env:
           GOOGLE_CLIENT_ID: ${{ vars.GOOGLE_CLIENT_ID }}
-          GOOGLE_REDIRECT_URI: ${{ vars.GOOGLE_REDIRECT_URI }}
+          GOOGLE_REDIRECT_URI: ${{ vars.GOOGLE_REDIRECT_URI || 'http://localhost:3000/api/gmail/callback' }}
           AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
-          AZURE_REDIRECT_URI: ${{ vars.AZURE_REDIRECT_URI }}
+          AZURE_REDIRECT_URI: ${{ vars.AZURE_REDIRECT_URI || 'http://localhost:3000/api/outlook/callback' }}
         run: |
           {
             printf 'GOOGLE_CLIENT_ID=%s\n' "$GOOGLE_CLIENT_ID"

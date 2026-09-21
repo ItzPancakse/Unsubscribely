@@ -30,7 +30,7 @@ function getOAuthClient() {
     return new google.auth.OAuth2(
         process.env.GOOGLE_CLIENT_ID,
         process.env.GOOGLE_CLIENT_SECRET || undefined,
-        process.env.GOOGLE_REDIRECT_URI || 'http://127.0.0.1:3000/api/gmail/callback'
+        process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/api/gmail/callback'
     );
 }
 
